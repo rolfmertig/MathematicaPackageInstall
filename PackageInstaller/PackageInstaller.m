@@ -106,17 +106,18 @@ closenb = Function[locnb, If[ $Notebooks && FileExistsQ[locnb],
                           ];
                           locnb];
 
-fixversion[nb_String?FileExistsQ] := Module[{nbp},
-		nbp = NotebookPut[Import[nb, "Package"] /. (FrontEndVersion -> _) :> Sequence[]];
-		DeleteFile[nb];
-		NotebookSave[nbp, nb];
-		nb
-];
+fixversion[nb_String?FileExistsQ] :=
+    Module[ {nbp},
+        nbp = NotebookPut[Import[nb, "Package"] /. (FrontEndVersion -> _) :> Sequence[]];
+        DeleteFile[nb];
+        NotebookSave[nbp, nb];
+        nb
+    ];
 
-opennb = Function[nb, If[ $Notebooks,
-                          fixversion @ closenb @ nb,
-                          nb
-                      ]];
+closeandfix = Function[nb, If[ $Notebooks,
+                               fixversion @ closenb @ nb,
+                               nb
+                           ]];
 
 (* InstallPalette *)
 Options[InstallPalette] = 
@@ -132,9 +133,16 @@ InstallPalette[url_String?urlQ, nb_String?nbQ, ops___?OptionQ] :=
 InstallPalette[url_String?(nbQ[#] && !urlQ[#]&), ___] :=
     Message[Installer::badurl, url];
     
-InstallPalette[url_String?(nbQ[#] &&  urlQ[#]&), OptionsPattern[]] :=
+InstallPalette[url_String?(nbQ[#] &&  urlQ[#]&), OptionsPattern[]] := Module[{},
 (* open the palette by default if we have a notebook interface *)
-    opennb @ (CopyRemote`CopyRemote[ url, OptionValue[Directory], Print -> OptionValue[Print]]);
+    closeandfix @ CopyRemote`CopyRemote[ url, OptionValue[Directory], Print -> OptionValue[Print]];
+    If[$Notebooks,
+       (* R.M & Szabolcs mentioned: http://mathematica.stackexchange.com/questions/8563/refreshing-the-palettes-menu/8564#8564 *)
+       MathLink`CallFrontEnd[FrontEnd`ResetMenusPacket[{Automatic, Automatic}]];
+       (* and http://mathematica.stackexchange.com/a/8604/12 *)
+       FrontEndTokenExecute["OpenFromPalettesMenu", StringReplace[FileNameTake[url], "%20"->" "]]
+    ]
+    ];
 
 UninstallPalette[pal_String, OptionsPattern[]] :=
     Module[ {dir, palfile},
@@ -198,8 +206,6 @@ With[ {list = {InstallPackage, InstallPalette, UninstallPackage, UninstallPalett
     Protect[list]
 ];
 
-Remove[list];
-
 End[]
 
 EndPackage[]
@@ -248,6 +254,5 @@ PackageInstaller`InstallPalette["https://dl.dropbox.com/u/38623/SE%20Uploader.nb
    FileNameJoin[{$UserBaseDirectory, "SystemFiles", "FrontEnd", "Palettes", "SE Uploader.nb"}]]; 
 *)
 ]
-
 
 *)
