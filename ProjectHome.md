@@ -1,0 +1,2 @@
+PackageInstaller is a Mathematica package. It is a JLink-based installer of zipped Mathematica packages. A PaletteInstaller function is also provided.
+PackageInstaller relies (automatically) on Unzip and CopyRemote (which are downloaded from unzip.googlecode.com and copyremote.googlecode.com )
