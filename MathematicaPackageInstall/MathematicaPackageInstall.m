@@ -24,6 +24,8 @@ Import @ "https://raw.githubusercontent.com/rolfmertig/MathematicaPackageInstall
 (* This could be commented *)
 If[$Notebooks && ($VersionNumber < 10), SetOptions[$FrontEndSession, MessageOptions -> {"InsufficientVersionWarning" -> False}]];
 
+MathematicalPackageInstall`Version = 2.0;
+
 Quiet[BeginPackage["MathematicaPackageInstall`", {"CopyRemote`", "Unzip`"}]];
 
 Unprotect @@ {MathematicaPackageInstall, InstallPalette, MathematicaPackageUninstall, UninstallPalette};
