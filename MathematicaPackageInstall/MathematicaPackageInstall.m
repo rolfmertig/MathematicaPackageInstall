@@ -17,14 +17,13 @@
 (* This could be commented *)
 If[$Notebooks && ($VersionNumber < 10), SetOptions[$FrontEndSession, MessageOptions -> {"InsufficientVersionWarning" -> False}]];
 
-BeginPackage["MathematicaPackageInstall`"];
+Quiet[BeginPackage["MathematicaPackageInstall`", {"CopyRemote`", "Unzip`"}]];
 
 Unprotect @@ {MathematicaPackageInstall, InstallPalette, MathematicaPackageUninstall, UninstallPalette};
 ClearAll @@ {MathematicaPackageInstall, InstallPalette, MathematicaPackageUninstall, UninstallPalette};
 
 MathematicaPackageInstall::usage = "MathematicaPackageInstall[\"MyPackage`\"] downloads and unzips master.zip
-from https://github.com/rolfmertig/mypackage/archive/master.zip
-  from $WebRepository ( https://raw.githubusercontent.com/rolfmertig   by default)
+  from $WebRepository/archive/master.zip (where $WebRepository is set to  \"https://github.com/rolfmertig\"  by default)
 to the directory specified by the option Directory (installing to $UserBaseDirectory/Applications by default)"
 
 InstallPalette::usage = "InstallPalette[\"http://www.mertig.com/mathdepot/ButtonTools.nb\"] installs ButtonTools.nb into 
@@ -33,8 +32,8 @@ the default directory specified by the option Directory.";
 UninstallPalette::usage = "UninstallPalette[\"ButtonTools.nb\"] uninstalls ButtonTools.nb from the directory specified by the option
 Directory.";
 
-MathematicaPackageUninstall::usage = "MathematicaPackageUninstall[context] returns Hold[DeleteDirectory][packagedirofcontext]. Please inspect the 
-result and apply ReleaseHold onto it if you really want to delete it.";
+MathematicaPackageUninstall::usage = "MathematicaPackageUninstall[\"package`\"] uninstalls (deletes) package` from 
+the Applications folder in $UserBaseDirectory.";
 
 $InstallerDirectory::usage = "$InstallerDirectory is the directory to install packages to. 
 	It is set by default to FileNameJoin[{$UserBaseDirectory,\"Applications\"}].";
@@ -43,10 +42,11 @@ $AutoInstall::usage = "If $AutoInstall is set to True,
 the three packages MathematicaPackageInstall`, CopyRemote` and Unzip` are installed locally already when loading this
 package the first time. Otherwise they are loaded from the internet.";
 
-$WebRepository::usage = "$WebRepository is the base url (default raw.githubusercontent.com/rolfmertig/) where the packages are.";
+$WebRepository::usage = "$WebRepository is the base url (default \"http://github.com/rolfmertig/\" ) where the packages are.";
 
-Installer::notazipfile = "The URL `1` is not referring to a zip file.";
-Installer::badurl = "The URL `1` does not exist or is not reachable.";
+MathematicaPackageInstall::notazipfile = "The URL `1` is not referring to a zip file.";
+MathematicaPackageInstall::badurl = "The URL `1` does not exist or is not reachable.";
+MathematicaPackageInstall::baddir = "The directory `1` does not exist.";
 
 URLNeeds::usage = "URLNeeds[\"MyPackage`\"] loads MyPackage.m from $WebRepository/MyPackage/master/MyPackage/MyPackage.m";
 
@@ -58,7 +58,10 @@ MathematicaPackageInstall`$WebRepository = "http://raw.githubusercontent.com/you
 The default for now is googlecode.com/hg/  
 *)
 
+(*
 If[ !ValueQ[$WebRepository], $WebRepository = "https://raw.githubusercontent.com/rolfmertig/"; ];
+*)
+If[ !ValueQ[$WebRepository], $WebRepository = "https://github.com/rolfmertig/"; ];
 
 (* install package by default, but provide the possibility of not to do so by
    setting MathematicaPackageInstall = $AutoInstall = False
@@ -80,16 +83,27 @@ Begin["`Private`"];
 
 (* auxiliary functions *)
 
-(* first call Needs, then go to $WebRepository *)
+toraw = Function[url, If[ StringMatchQ[url, "https://github.com/*"],
+                          StringReplace[url, "github.com" -> "raw.githubusercontent.com"],
+                          url
+                      ]
+];
+
+(* first call Needs, then go to toraw@$WebRepository *)
+(* Notice that URLNeeds is simpler than Needs, so Kernel/init.m should be trivial, since it is ignored in URLNeeds ... *)
 URLNeeds = Function[package,
-  Quiet[If[ FindFile[package] =!= $Failed,
+  (*Quiet@*)If[ FindFile[package] =!= $Failed,
     Needs[package],
     Import[
-        $WebRepository <> StringReplace[package, "`" -> "/master"] <> "/" <> 
+    	(*this gives, e.g.:
+    	https://raw.githubusercontent.com/rolfmertig/Unzip/master/Unzip/Unzip/Unzip.m
+    	 *)
+        toraw[$WebRepository] <> 
+        StringReplace[package, "`" -> "/master/"] <> 
  		StringReplace[package, "`" -> ""] <> "/" <> 
-		 StringReplace[package, a__ ~~ "`" :> (a ~~ ".m")]
+		StringReplace[package, a__ ~~ "`" :> (a ~~ ".m")]
 	]
-  ]]
+  ]
 ];
 
 
@@ -129,7 +143,7 @@ InstallPalette[url_String?urlQ, nb_String?nbQ, ops___?OptionQ] :=
     InstallPalette[ url <> "/" <> nb, ops] /; StringTake[url, -1] =!= "/";
 
 InstallPalette[url_String?(nbQ[#] && !urlQ[#]&), ___] :=
-    Message[Installer::badurl, url];
+    Message[MathematicaPackageInstall::badurl, url];
 
 InstallPalette[url_String?(nbQ[#] && urlQ[#]&), OptionsPattern[]] := Module[{},
 (* open the palette by default if we have a notebook interface *)
@@ -162,7 +176,7 @@ Options[MathematicaPackageInstall] = {Directory :> $InstallerDirectory, Print ->
 
 (* Enable MathematicaPackageInstall["CopyRemote`"] *)
 MathematicaPackageInstall[p_String /; (packQ[p] && !StringMatchQ[p, "http*", IgnoreCase -> True]), ops___?OptionQ] :=
-    MathematicaPackageInstall[$WebRepository, StringReplace[p, "`" -> (StringDrop[ToLowerCase[p],-1]) <> "/archive/master.zip"], ops];
+    MathematicaPackageInstall[$WebRepository, StringReplace[p, "`" -> "/" <> "archive/master.zip"], ops];
 
 MathematicaPackageInstall[webrep_?urlQ, p_String?zipQ, ops___?OptionQ] :=
     MathematicaPackageInstall[ webrep <> p, ops] /; StringTake[webrep, -1] === "/";
@@ -171,19 +185,34 @@ MathematicaPackageInstall[webrep_?urlQ, p_String?zipQ, ops___?OptionQ] :=
     MathematicaPackageInstall[ webrep <> "/" <> p, ops] /; StringTake[webrep, -1] =!= "/";
 
 MathematicaPackageInstall[zipurl_String?(!zipQ[#]&), ___?OptionQ] :=
-    Message[Installer::notazipfile, zipurl];
+    Message[MathematicaPackageInstall::notazipfile, zipurl];
 
 MathematicaPackageInstall[url_String?(!urlQ[#]&), ___?OptionQ] /; (!FileExistsQ[url]) :=
-    Message[Installer::badurl, url];
+    Message[MathematicaPackageInstall::badurl, url];
 
 MathematicaPackageInstall[zipurl_String?(zipQ[#] && urlQ[#]&), OptionsPattern[]] := Catch @
-    Module[ {diropt = OptionValue[Directory], zip, priopt = OptionValue[Print]},
-      zip =
-          CopyRemote`CopyRemote[zipurl, Print -> priopt];
+    Module[ {diropt = OptionValue[Directory], before, zip, priopt = OptionValue[Print], package, packdir, unzippedmasterdir},
+      before = Select[#, DirectoryQ]& @ FileNames["*", diropt, 1];
+      zip = CopyRemote`CopyRemote[zipurl, Print -> priopt];
       If[zip === $Failed, Throw[$Failed]];
       Unzip`Unzip[zip, diropt, Print -> priopt];
       DeleteFile[zip];
-      diropt
+      (* https://github.com/rolfmertig/MathematicaPackageInstall/archive/master.zip *)
+      If[ StringMatchQ[zipurl, $WebRepository ~~ __ ~~ "/archive/master.zip"],
+      	(* ovewrite *)
+      	package = StringReplace[zipurl, $WebRepository ~~ pack__ ~~ "/archive/master.zip" :> pack];
+      	packdir = FileNameJoin[{diropt, package}];
+      	unzippedmasterdir = FileNameJoin[{diropt, package <> "-master"}];
+      	If[DirectoryQ[packdir], DeleteDirectory[packdir, DeleteContents -> True]];
+(*  the directory structure should be such that:*)
+      	If[!DirectoryQ[ FileNameJoin[{unzippedmasterdir, package}] ], 
+      		Message[MathematicaPackageInstaller::baddir, FileNameJoin[{unzippedmasterdir, package}]],
+           RenameDirectory[FileNameJoin[{unzippedmasterdir, package}], packdir];
+           DeleteDirectory[unzippedmasterdir, DeleteContents -> True]
+      	]
+      ];
+      (* return the installed package : *)
+      Complement[ Select[#, DirectoryQ]& @ FileNames["*", diropt, 1],  before ] /. {dir_String} :> dir
     ];
 
 MathematicaPackageInstall[localzipfile_String?FileExistsQ, OptionsPattern[]] :=
@@ -193,16 +222,22 @@ MathematicaPackageUninstall[context_String /; StringMatchQ[context, "*`"], Optio
     Block[ {$Path = FileNameJoin[{$UserBaseDirectory, "Applications"}]},
       FindFile[context] =!= $Failed
     ] :=
-    Hold[DeleteDirectory][Function[d, If[ FileNameTake[d, -1] === "Kernel",
+    DeleteDirectory[Function[d, If[ FileNameTake[d, -1] === "Kernel",
       ParentDirectory[d],
       d
     ]][DirectoryName[FindFile[context]]],
       DeleteContents -> True];
+      
+MathematicaPackageUninstall[context_String /; StringMatchQ[context, "*`"], OptionsPattern[]] /;
+    Block[ {$Path = FileNameJoin[{$UserBaseDirectory, "Applications"}]},
+      FindFile[context] === $Failed
+    ] := Null; (* or return a message ? *)
 
 With[ {list = {MathematicaPackageInstall, InstallPalette, MathematicaPackageUninstall, UninstallPalette}},
   SetAttributes[list, ReadProtected];
   Protect[list]
 ];
+
 
 End[]
 
@@ -217,7 +252,8 @@ If[ ("AllowInternetUse" /. SystemInformation["Network"]) === False,
 ];
 
 (* should be on the Path, therefore do this after EndPackage[] : *)
-MathematicaPackageInstall`URLNeeds /@ {"CopyRemote`", "Unzip`"};
+If[!MemberQ[$Packages, "CopyRemote`"], MathematicaPackageInstall`URLNeeds @ "CopyRemote`"];
+If[!MemberQ[$Packages, "Unzip`"], MathematicaPackageInstall`URLNeeds @ "Unzip`"];
 
 If[ MathematicaPackageInstall`$AutoInstall =!= False,
   If[ Quiet[FindFile["MathematicaPackageInstall`"]] === $Failed, MathematicaPackageInstall["MathematicaPackageInstall`"] ];

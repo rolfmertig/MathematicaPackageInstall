@@ -1,1 +1,113 @@
-Notebook[{}]
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      2840,        104]
+NotebookOptionsPosition[      2192,         79]
+NotebookOutlinePosition[      2582,         96]
+CellTagsIndexPosition[      2539,         93]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"AppendTo", "[", 
+   RowBox[{"$Path", ",", 
+    RowBox[{"FileNameJoin", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"ParentDirectory", "@", 
+        RowBox[{"NotebookDirectory", "[", "]"}]}], ",", "\"\<Unzip\>\""}], 
+      "}"}], "]"}]}], "]"}], ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"AppendTo", "[", 
+   RowBox[{"$Path", ",", 
+    RowBox[{"FileNameJoin", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"ParentDirectory", "@", 
+        RowBox[{"NotebookDirectory", "[", "]"}]}], ",", 
+       "\"\<CopyRemote\>\""}], "}"}], "]"}]}], "]"}], ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"AppendTo", "[", 
+   RowBox[{"$Path", ",", 
+    RowBox[{"NotebookDirectory", "[", "]"}]}], "]"}], ";"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"Needs", "[", "\"\<MathematicaPackageInstall`\>\"", "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"?", "MathematicaPackageUninstall"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"MathematicaPackageUninstall", "[", "\"\<Unzip`\>\"", "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"MathematicaPackageUninstall", "[", "\"\<CopyRemote`\>\"", 
+  "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"MathematicaPackageInstall", "[", "\"\<CopyRemote`\>\"", 
+  "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"MathematicaPackageUninstall", "[", "\"\<MSFTP`\>\"", "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"MathematicaPackageInstall", "[", "\"\<MSFTP`\>\"", "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"Complement", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"a", ",", "b", ",", "c"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"b", ",", "c"}], "}"}]}], "]"}]], "Input"]
+},
+Editable->True,
+WindowSize->{1548, 714},
+WindowMargins->{{Automatic, 71}, {Automatic, 34}},
+Magnification:>1.6 Inherited,
+FrontEndVersion->"10.1 for Microsoft Windows (64-bit) (March 23, 2015)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 307, 9, 47, "Input"],
+Cell[868, 31, 313, 9, 47, "Input"],
+Cell[1184, 42, 148, 4, 47, "Input"],
+Cell[1335, 48, 91, 1, 47, "Input"],
+Cell[1429, 51, 70, 1, 47, "Input"],
+Cell[1502, 54, 93, 1, 47, "Input"],
+Cell[1598, 57, 101, 2, 47, "Input"],
+Cell[1702, 61, 99, 2, 47, "Input"],
+Cell[1804, 65, 93, 1, 47, "Input"],
+Cell[1900, 68, 91, 1, 47, "Input"],
+Cell[1994, 71, 194, 6, 47, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
