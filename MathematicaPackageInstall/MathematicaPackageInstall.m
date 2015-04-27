@@ -14,6 +14,13 @@
 
 (* ::Context:: MathematicaPackageInstall` *)
 
+(* 
+load this file by 
+Get @ "http://goo.gl/Ncbbi6"
+
+or 
+Import @ "https://raw.githubusercontent.com/rolfmertig/MathematicaPackageInstall/master/MathematicaPackageInstall/MathematicaPackageInstall.m"*)
+
 (* This could be commented *)
 If[$Notebooks && ($VersionNumber < 10), SetOptions[$FrontEndSession, MessageOptions -> {"InsufficientVersionWarning" -> False}]];
 
