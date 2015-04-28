@@ -31,23 +31,29 @@ Quiet[BeginPackage["MathematicaPackageInstall`", {"CopyRemote`", "Unzip`"}]];
 Unprotect @@ {MathematicaPackageInstall, InstallPalette, MathematicaPackageUninstall, UninstallPalette};
 ClearAll @@ {MathematicaPackageInstall, InstallPalette, MathematicaPackageUninstall, UninstallPalette};
 
-MathematicaPackageInstall::usage = "MathematicaPackageInstall[\"MyPackage`\"] downloads and unzips master.zip
-  from $WebRepository/archive/master.zip (where $WebRepository is set to  \"https://github.com/rolfmertig\"  by default)
-to the directory specified by the option Directory (installing to $UserBaseDirectory/Applications by default)"
+MathematicaPackageInstall::usage = 
+"MathematicaPackageInstall[\"MyPackage\"] or \n
+MathematicaPackageInstall[\"https://github.com/rolfmertig/MyPackage/archive/master.zip\"] \n
+downloads and unzips master.zip from $WebRepository/MyPackage/archive/master.zip,\n
+to the directory specified by the setting specified by the option Directory,\n
+installing to $UserBaseDirectory/Applications by default.\n
+$WebRepository is set to  \"https://github.com/rolfmertig/\" by default, but can be changed.\n
+If MyPackage already exists it is overwritten, no backups are done.";
 
 InstallPalette::usage = "InstallPalette[\"http://www.mertig.com/mathdepot/ButtonTools.nb\"] installs ButtonTools.nb into 
 the default directory specified by the option Directory.";
 
 UninstallPalette::usage = "UninstallPalette[\"ButtonTools.nb\"] uninstalls ButtonTools.nb from the directory specified by the option
-Directory.";
+Directory. Please close the palette first before calling UninstallPalette.";
 
-MathematicaPackageUninstall::usage = "MathematicaPackageUninstall[\"package`\"] uninstalls (deletes) package` from 
+MathematicaPackageUninstall::usage = 
+"MathematicaPackageUninstall[\"MyPackage\"] uninstalls (deletes) MyPackage from 
 the Applications folder in $UserBaseDirectory.";
 
 $InstallerDirectory::usage = "$InstallerDirectory is the directory to install packages to. 
 	It is set by default to FileNameJoin[{$UserBaseDirectory,\"Applications\"}].";
 
-$AutoInstall::usage = "If $AutoInstall is set to True, 
+$AutomaticInstall::usage = "If $AutomaticInstall is set to True, 
 the three packages MathematicaPackageInstall`, CopyRemote` and Unzip` are installed locally already when loading this
 package the first time. Otherwise they are loaded from the internet.";
 
@@ -73,11 +79,11 @@ If[ !ValueQ[$WebRepository], $WebRepository = "https://raw.githubusercontent.com
 If[ !ValueQ[$WebRepository], $WebRepository = "https://github.com/rolfmertig/"; ];
 
 (* install package by default, but provide the possibility of not to do so by
-   setting MathematicaPackageInstall = $AutoInstall = False
+   setting MathematicaPackageInstall = $AutomaticInstall = False
    before loading this package
 *)
 
-If[ !ValueQ[$AutoInstall], $AutoInstall = False];
+If[ !ValueQ[$AutomaticInstall], $AutomaticInstall = False];
 
 If[ !ValueQ[$InstallerDirectory],
   $InstallerDirectory :=
@@ -161,7 +167,8 @@ InstallPalette[url_String?(nbQ[#] && urlQ[#]&), OptionsPattern[]] := Module[{},
   (* R.M & Szabolcs mentioned: http://mathematica.stackexchange.com/questions/8563/refreshing-the-palettes-menu/8564#8564 *)
     MathLink`CallFrontEnd[FrontEnd`ResetMenusPacket[{Automatic, Automatic}]];
     (* and http://mathematica.stackexchange.com/a/8604/12 *)
-    FrontEndTokenExecute["OpenFromPalettesMenu", StringReplace[FileNameTake[url], "%20" -> " "]]
+    FrontEndTokenExecute["OpenFromPalettesMenu", StringReplace[FileNameTake[url], "%20" -> " "]];
+    Notebooks[]//First (* this gives the palette just opened*)
   ]
 ];
 
@@ -171,17 +178,22 @@ UninstallPalette[pal_String, OptionsPattern[]] :=
       palfile = FileNameJoin[{dir, pal}];
       If[ FileExistsQ[palfile],
         DeleteFile[palfile]
-      ]
+      ];
+        MathLink`CallFrontEnd[FrontEnd`ResetMenusPacket[{Automatic, Automatic}]];
     ];
 
 (* MathematicaPackageInstall *)
 
-packQ[s_String /; StringLength[s] > 1] :=
+packQ[s_String /; StringLength[s] > 1] := packQ[s] = 
     StringCount[s,"`"] === 1 && StringTake[s, -1] === "`";
 packQ[_] :=
     False;
 
 Options[MathematicaPackageInstall] = {Directory :> $InstallerDirectory, Print -> False};
+
+(* maybe easier to allow also this: *)
+MathematicaPackageInstall[p_String /; (!packQ[p]) && (!urlQ[p]), more___] := 
+	MathematicaPackageInstall[p <> "`", more];
 
 (* Enable MathematicaPackageInstall["CopyRemote`"] *)
 MathematicaPackageInstall[p_String /; (packQ[p] && !StringMatchQ[p, "http*", IgnoreCase -> True]), ops___?OptionQ] :=
@@ -211,8 +223,9 @@ MathematicaPackageInstall[zipurl_String?(zipQ[#] && urlQ[#]&), OptionsPattern[]]
       	(* ovewrite *)
       	package = StringReplace[zipurl, $WebRepository ~~ pack__ ~~ "/archive/master.zip" :> pack];
       	packdir = FileNameJoin[{diropt, package}];
-      	unzippedmasterdir = FileNameJoin[{diropt, package <> "-master"}];
       	If[DirectoryQ[packdir], DeleteDirectory[packdir, DeleteContents -> True]];
+      	If[FileExistsQ[packdir], Pause[.2]];
+      	unzippedmasterdir = FileNameJoin[{diropt, package <> "-master"}];
 (*  the directory structure should be such that:*)
       	If[!DirectoryQ[ FileNameJoin[{unzippedmasterdir, package}] ], 
       		Message[MathematicaPackageInstaller::baddir, FileNameJoin[{unzippedmasterdir, package}]],
@@ -220,14 +233,17 @@ MathematicaPackageInstall[zipurl_String?(zipQ[#] && urlQ[#]&), OptionsPattern[]]
            DeleteDirectory[unzippedmasterdir, DeleteContents -> True]
       	]
       ];
-      (* return the installed package : *)
-      Complement[ Select[#, DirectoryQ]& @ FileNames["*", diropt, 1],  before ] /. {dir_String} :> dir
+      (* return the installed package, if it got installed ...  *)
+      If[DirectoryQ[packdir], packdir, $Failed]
     ];
 
 MathematicaPackageInstall[localzipfile_String?FileExistsQ, OptionsPattern[]] :=
     Unzip`Unzip[localzipfile, OptionValue[Directory], Print -> OptionValue[Print]];
 
-MathematicaPackageUninstall[context_String /; StringMatchQ[context, "*`"], OptionsPattern[]] /;
+MathematicaPackageUninstall[context_String /; (!packQ[context]), opts___] :=
+	MathematicaPackageUninstall[context<>"`", opts];
+
+MathematicaPackageUninstall[context_String /; packQ[context], OptionsPattern[]] /;
     Block[ {$Path = FileNameJoin[{$UserBaseDirectory, "Applications"}]},
       FindFile[context] =!= $Failed
     ] :=
@@ -264,7 +280,7 @@ If[ ("AllowInternetUse" /. SystemInformation["Network"]) === False,
 If[!MemberQ[$Packages, "CopyRemote`"], MathematicaPackageInstall`URLNeeds @ "CopyRemote`"];
 If[!MemberQ[$Packages, "Unzip`"], MathematicaPackageInstall`URLNeeds @ "Unzip`"];
 
-If[ MathematicaPackageInstall`$AutoInstall =!= False,
+If[ MathematicaPackageInstall`$AutomaticInstall =!= False,
   If[ Quiet[FindFile["MathematicaPackageInstall`"]] === $Failed, MathematicaPackageInstall["MathematicaPackageInstall`"] ];
   If[ Quiet[FindFile["CopyRemote`"]] === $Failed, MathematicaPackageInstall["CopyRemote`"] ];
   If[ Quiet[FindFile["Unzip`"]] === $Failed, MathematicaPackageInstall["Unzip`"] ];
@@ -279,7 +295,7 @@ Import["https://raw.githubusercontent.com/rolfmertig/MathematicaPackageInstall/m
 and open  it 
 *)
 
-MathematicaPackageInstall`InstallPalette["https://www.mertig.com/mathdepot/ButtonTools.nb"];
+MathematicaPackageInstall`InstallPalette["http://www.mertig.com/mathdepot/ButtonTools.nb"];
 
 (* this will install the palette here:
    FileNameJoin[{$UserBaseDirectory, "SystemFiles", "FrontEnd", "Palettes", "ButtonTools.nb"}]];
