@@ -10,14 +10,18 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[      9368,        308]
-NotebookOptionsPosition[      7041,        226]
-NotebookOutlinePosition[      7977,        259]
-CellTagsIndexPosition[      7853,        253]
+NotebookDataLength[     15034,        491]
+NotebookOptionsPosition[     10702,        347]
+NotebookOutlinePosition[     12549,        404]
+CellTagsIndexPosition[     12218,        393]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
+Cell["\<\
+This is just for convenience, if opened from inside Workbench:\
+\>", "Text"],
+
 Cell[BoxData[{
  RowBox[{
   RowBox[{"PrependTo", "[", 
@@ -42,16 +46,6 @@ Cell[BoxData[{
    RowBox[{"$Path", ",", 
     RowBox[{"NotebookDirectory", "[", "]"}]}], "]"}], ";"}]}], "Input"],
 
-Cell[CellGroupData[{
-
-Cell[BoxData[
- RowBox[{"FindFile", "[", "\"\<MathematicaPackageInstall`\>\"", 
-  "]"}]], "Input"],
-
-Cell[BoxData["\<\"C:\\\\repositorygit\\\\MathematicaPackageInstall\\\\\
-MathematicaPackageInstall\\\\Kernel\\\\init.m\"\>"], "Output"]
-}, Open  ]],
-
 Cell[BoxData[
  RowBox[{
   RowBox[{"If", "[", 
@@ -67,8 +61,7 @@ http://goo.gl/Ncbbi6\[CloseCurlyDoubleQuote]
 is a shortcut for 
 \[OpenCurlyDoubleQuote]https://raw.githubusercontent.com/rolfmertig/\
 MathematicaPackageInstall/master/MathematicaPackageInstall/\
-MathematicaPackageInstall.m\[CloseCurlyDoubleQuote]
-\
+MathematicaPackageInstall.m\[CloseCurlyDoubleQuote]\
 \>", "Text"],
 
 Cell[BoxData[
@@ -89,7 +82,7 @@ $UserBaseDirectory/Applications by default.\\n$WebRepository is set to  \
 \\\"https://github.com/rolfmertig/\\\" by default, but can be changed.\\nIf \
 MyPackage already exists it is overwritten, no backups are done.\"\>", 
   "MSG"]], "Print", "PrintUsage",
- CellTags->"Info3639248242-9761415"]
+ CellTags->"Info3639249433-1534712"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -101,7 +94,7 @@ Cell[BoxData[
  StyleBox["\<\"MathematicaPackageUninstall[\\\"MyPackage\\\"] uninstalls \
 (deletes) MyPackage from \\nthe Applications folder in \
 $UserBaseDirectory.\"\>", "MSG"]], "Print", "PrintUsage",
- CellTags->"Info3639248242-9761415"]
+ CellTags->"Info3639249433-1534712"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -114,7 +107,7 @@ Cell[BoxData[
 URLFileNameTake[urlfile] to $TemporaryDirectory.\\n CopyRemote[url, \
 localfile] copies a file from an url to localfile.\"\>", "MSG"]], "Print", \
 "PrintUsage",
- CellTags->"Info3639248242-9761415"]
+ CellTags->"Info3639249433-1534712"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -144,7 +137,7 @@ $UserBaseDirectory/Applications by default.\\n$WebRepository is set to  \
 \\\"https://github.com/rolfmertig/\\\" by default, but can be changed.\\nIf \
 MyPackage already exists it is overwritten, no backups are done.\"\>", 
   "MSG"]], "Print", "PrintUsage",
- CellTags->"Info3639248243-9761415"],
+ CellTags->"Info3639249433-1534712"],
 
 Cell[BoxData[
  InterpretationBox[GridBox[{
@@ -178,7 +171,7 @@ Cell[BoxData[
      "RowsIndexed" -> {}}],
   Definition[MathematicaPackageInstall`MathematicaPackageInstall],
   Editable->False]], "Print",
- CellTags->"Info3639248243-9761415"]
+ CellTags->"Info3639249433-1534712"]
 }, Open  ]]
 }, Open  ]],
 
@@ -220,13 +213,141 @@ Mertig\\\\AppData\\\\Roaming\\\\Mathematica\\\\Applications\\\\MSFTP\"\>"], \
 "Output"]
 }, Open  ]],
 
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"?", "InstallPalette"}]], "Input"],
+
+Cell[BoxData[
+ StyleBox["\<\"InstallPalette[\\\"http://www.mertig.com/mathdepot/ButtonTools.\
+nb\\\"] installs ButtonTools.nb into \\nthe default directory specified by \
+the option Directory.\"\>", "MSG"]], "Print", "PrintUsage",
+ CellTags->"Info3639249479-1534712"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
 Cell[BoxData[
  RowBox[{"InstallPalette", "[", 
-  "\"\<http://www.mertig.com/mathdepot/ButtonTools.nb\>\"", "]"}]], "Input"]
+  "\"\<http://www.mertig.com/mathdepot/ButtonTools.nb\>\"", "]"}]], "Input"],
+
+Cell[BoxData[
+ TemplateBox[{FrontEndObject[
+    LinkObject["bd4rx_shm", 3, 1]],145,
+   "FrontEndObject[LinkObject[\"bd4rx_shm\", 3, 1]]","145",
+   "\"ButtonTools.nb\"",
+   "\"C:\\\\Users\\\\Rolf \
+Mertig\\\\AppData\\\\Roaming\\\\Mathematica\\\\SystemFiles\\\\FrontEnd\\\\\
+Palettes\\\\ButtonTools.nb\""},
+  "NotebookObject"]], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"?", "UninstallPalette"}]], "Input"],
+
+Cell[BoxData[
+ StyleBox["\<\"UninstallPalette[\\\"ButtonTools.nb\\\"] uninstalls \
+ButtonTools.nb from the directory specified by the option\\nDirectory. Please \
+close the palette first before calling UninstallPalette.\"\>", 
+  "MSG"]], "Print", "PrintUsage",
+ CellTags->"Info3639249518-1534712"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"?", "URLNeeds"}]], "Input"],
+
+Cell[BoxData[
+ StyleBox["\<\"URLNeeds[\\\"MyPackage`\\\"] loads MyPackage.m from \
+$WebRepository/MyPackage/master/MyPackage/MyPackage.m\"\>", "MSG"]], "Print", \
+"PrintUsage",
+ CellTags->"Info3639249526-1534712"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"?", "$AutomaticInstall"}]], "Input"],
+
+Cell[BoxData[
+ StyleBox["\<\"If $AutomaticInstall is set to True, \\nthe three packages \
+MathematicaPackageInstall`, CopyRemote` and Unzip` are installed locally \
+already when loading this\\npackage the first time. Otherwise they are loaded \
+from the internet.\"\>", "MSG"]], "Print", "PrintUsage",
+ CellTags->"Info3639249536-1534712"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"?", "$InstallerDirectory"}]], "Input"],
+
+Cell[BoxData[
+ StyleBox["\<\"$InstallerDirectory is the directory to install packages to. \
+\\n\\tIt is set by default to \
+FileNameJoin[{$UserBaseDirectory,\\\"Applications\\\"}].\"\>", 
+  "MSG"]], "Print", "PrintUsage",
+ CellTags->"Info3639249545-1534712"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"??", "$WebRepository"}]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ StyleBox["\<\"$WebRepository is the base url (default \
+\\\"http://github.com/rolfmertig/\\\" ) where the packages are.\"\>", 
+  "MSG"]], "Print", "PrintUsage",
+ CellTags->"Info3639249569-1534712"],
+
+Cell[BoxData[
+ InterpretationBox[GridBox[{
+    {GridBox[{
+       {
+        RowBox[{
+        "$WebRepository", "=", "\<\"https://github.com/rolfmertig/\"\>"}]}
+      },
+      BaselinePosition->{Baseline, {1, 1}},
+      GridBoxAlignment->{
+       "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+        "RowsIndexed" -> {}},
+      GridBoxItemSize->{"Columns" -> {{
+           Scaled[0.999]}}, "ColumnsIndexed" -> {}, "Rows" -> {{1.}}, 
+        "RowsIndexed" -> {}}]}
+   },
+   BaselinePosition->{Baseline, {1, 1}},
+   GridBoxAlignment->{
+    "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+     "RowsIndexed" -> {}}],
+  Definition[MathematicaPackageInstall`$WebRepository],
+  Editable->False]], "Print",
+ CellTags->"Info3639249569-1534712"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Names", "[", "\"\<MathematicaPackageInstall`*\>\"", "]"}]], "Input"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"\<\"InstallPalette\"\>", ",", "\<\"MathematicaPackageInstall\"\>", 
+   ",", "\<\"MathematicaPackageUninstall\"\>", 
+   ",", "\<\"UninstallPalette\"\>", ",", "\<\"URLNeeds\"\>", 
+   ",", "\<\"$AutomaticInstall\"\>", ",", "\<\"$InstallerDirectory\"\>", 
+   ",", "\<\"$WebRepository\"\>"}], "}"}]], "Output"]
+}, Open  ]]
 },
 Editable->True,
 WindowSize->{1215, 911},
-WindowMargins->{{-21, Automatic}, {-102, Automatic}},
+WindowMargins->{{6, Automatic}, {34, Automatic}},
 Magnification:>1.6 Inherited,
 FrontEndVersion->"10.1 for Microsoft Windows (64-bit) (March 23, 2015)",
 StyleDefinitions->"Default.nb"
@@ -236,80 +357,142 @@ StyleDefinitions->"Default.nb"
 (* Internal cache information *)
 (*CellTagsOutline
 CellTagsIndex->{
- "Info3639248242-9761415"->{
-  Cell[2324, 81, 658, 10, 261, "Print",
-   CellTags->"Info3639248242-9761415"],
-  Cell[3092, 99, 240, 4, 101, "Print",
-   CellTags->"Info3639248242-9761415"],
-  Cell[3425, 111, 268, 5, 101, "Print",
-   CellTags->"Info3639248242-9761415"]},
- "Info3639248243-9761415"->{
-  Cell[4064, 136, 658, 10, 261, "Print",
-   CellTags->"Info3639248243-9761415"],
-  Cell[4725, 148, 1180, 32, 82, "Print",
-   CellTags->"Info3639248243-9761415"]}
+ "Info3639249433-1534712"->{
+  Cell[2141, 74, 658, 10, 261, "Print",
+   CellTags->"Info3639249433-1534712"],
+  Cell[2909, 92, 240, 4, 101, "Print",
+   CellTags->"Info3639249433-1534712"],
+  Cell[3242, 104, 268, 5, 101, "Print",
+   CellTags->"Info3639249433-1534712"],
+  Cell[3881, 129, 658, 10, 261, "Print",
+   CellTags->"Info3639249433-1534712"],
+  Cell[4542, 141, 1180, 32, 82, "Print",
+   CellTags->"Info3639249433-1534712"]},
+ "Info3639249479-1534712"->{
+  Cell[6813, 220, 267, 4, 101, "Print",
+   CellTags->"Info3639249479-1534712"]},
+ "Info3639249518-1534712"->{
+  Cell[7678, 249, 297, 5, 101, "Print",
+   CellTags->"Info3639249518-1534712"]},
+ "Info3639249526-1534712"->{
+  Cell[8066, 262, 213, 4, 68, "Print",
+   CellTags->"Info3639249526-1534712"]},
+ "Info3639249536-1534712"->{
+  Cell[8379, 274, 338, 5, 133, "Print",
+   CellTags->"Info3639249536-1534712"]},
+ "Info3639249545-1534712"->{
+  Cell[8819, 287, 258, 5, 101, "Print",
+   CellTags->"Info3639249545-1534712"]},
+ "Info3639249569-1534712"->{
+  Cell[9197, 302, 212, 4, 68, "Print",
+   CellTags->"Info3639249569-1534712"],
+  Cell[9412, 308, 785, 21, 33, "Print",
+   CellTags->"Info3639249569-1534712"]}
  }
 *)
 (*CellTagsIndex
 CellTagsIndex->{
- {"Info3639248242-9761415", 7398, 238},
- {"Info3639248243-9761415", 7667, 245}
+ {"Info3639249433-1534712", 11055, 359},
+ {"Info3639249479-1534712", 11486, 370},
+ {"Info3639249518-1534712", 11596, 373},
+ {"Info3639249526-1534712", 11706, 376},
+ {"Info3639249536-1534712", 11815, 379},
+ {"Info3639249545-1534712", 11925, 382},
+ {"Info3639249569-1534712", 12035, 385}
  }
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 741, 22, 135, "Input"],
+Cell[558, 20, 86, 2, 47, "Text"],
+Cell[647, 24, 741, 22, 135, "Input"],
+Cell[1391, 48, 287, 8, 77, "Input"],
+Cell[1681, 58, 270, 6, 137, "Text"],
+Cell[1954, 66, 91, 1, 47, "Input"],
 Cell[CellGroupData[{
-Cell[1324, 46, 97, 2, 47, "Input"],
-Cell[1424, 50, 134, 1, 77, "Output"]
-}, Open  ]],
-Cell[1573, 54, 287, 8, 77, "Input"],
-Cell[1863, 64, 271, 7, 167, "Text"],
-Cell[2137, 73, 91, 1, 47, "Input"],
-Cell[CellGroupData[{
-Cell[2253, 78, 68, 1, 47, "Input"],
-Cell[2324, 81, 658, 10, 261, "Print",
- CellTags->"Info3639248242-9761415"]
+Cell[2070, 71, 68, 1, 47, "Input"],
+Cell[2141, 74, 658, 10, 261, "Print",
+ CellTags->"Info3639249433-1534712"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[3019, 96, 70, 1, 47, "Input"],
-Cell[3092, 99, 240, 4, 101, "Print",
- CellTags->"Info3639248242-9761415"]
+Cell[2836, 89, 70, 1, 47, "Input"],
+Cell[2909, 92, 240, 4, 101, "Print",
+ CellTags->"Info3639249433-1534712"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[3369, 108, 53, 1, 47, "Input"],
-Cell[3425, 111, 268, 5, 101, "Print",
- CellTags->"Info3639248242-9761415"]
+Cell[3186, 101, 53, 1, 47, "Input"],
+Cell[3242, 104, 268, 5, 101, "Print",
+ CellTags->"Info3639249433-1534712"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[3730, 121, 40, 0, 47, "Input"],
-Cell[3773, 123, 65, 0, 47, "Output"]
+Cell[3547, 114, 40, 0, 47, "Input"],
+Cell[3590, 116, 65, 0, 47, "Output"]
 }, Open  ]],
-Cell[3853, 126, 92, 1, 47, "Input"],
+Cell[3670, 119, 92, 1, 47, "Input"],
 Cell[CellGroupData[{
-Cell[3970, 131, 69, 1, 47, "Input"],
+Cell[3787, 124, 69, 1, 47, "Input"],
 Cell[CellGroupData[{
-Cell[4064, 136, 658, 10, 261, "Print",
- CellTags->"Info3639248243-9761415"],
-Cell[4725, 148, 1180, 32, 82, "Print",
- CellTags->"Info3639248243-9761415"]
+Cell[3881, 129, 658, 10, 261, "Print",
+ CellTags->"Info3639249433-1534712"],
+Cell[4542, 141, 1180, 32, 82, "Print",
+ CellTags->"Info3639249433-1534712"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[5954, 186, 90, 1, 47, "Input"],
-Cell[6047, 189, 127, 2, 47, "Output"]
+Cell[5771, 179, 90, 1, 47, "Input"],
+Cell[5864, 182, 127, 2, 47, "Output"]
 }, Open  ]],
-Cell[6189, 194, 100, 2, 47, "Input"],
+Cell[6006, 187, 100, 2, 47, "Input"],
 Cell[CellGroupData[{
-Cell[6314, 200, 98, 2, 47, "Input"],
-Cell[6415, 204, 132, 2, 47, "Output"]
+Cell[6131, 193, 98, 2, 47, "Input"],
+Cell[6232, 197, 132, 2, 47, "Output"]
 }, Open  ]],
-Cell[6562, 209, 92, 1, 47, "Input"],
+Cell[6379, 202, 92, 1, 47, "Input"],
 Cell[CellGroupData[{
-Cell[6679, 214, 90, 1, 47, "Input"],
-Cell[6772, 217, 127, 2, 47, "Output"]
+Cell[6496, 207, 90, 1, 47, "Input"],
+Cell[6589, 210, 127, 2, 47, "Output"]
 }, Open  ]],
-Cell[6914, 222, 123, 2, 47, "Input"]
+Cell[CellGroupData[{
+Cell[6753, 217, 57, 1, 47, "Input"],
+Cell[6813, 220, 267, 4, 101, "Print",
+ CellTags->"Info3639249479-1534712"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7117, 229, 123, 2, 47, "Input"],
+Cell[7243, 233, 336, 8, 72, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7616, 246, 59, 1, 47, "Input"],
+Cell[7678, 249, 297, 5, 101, "Print",
+ CellTags->"Info3639249518-1534712"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8012, 259, 51, 1, 47, "Input"],
+Cell[8066, 262, 213, 4, 68, "Print",
+ CellTags->"Info3639249526-1534712"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8316, 271, 60, 1, 47, "Input"],
+Cell[8379, 274, 338, 5, 133, "Print",
+ CellTags->"Info3639249536-1534712"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8754, 284, 62, 1, 47, "Input"],
+Cell[8819, 287, 258, 5, 101, "Print",
+ CellTags->"Info3639249545-1534712"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9114, 297, 58, 1, 47, "Input"],
+Cell[CellGroupData[{
+Cell[9197, 302, 212, 4, 68, "Print",
+ CellTags->"Info3639249569-1534712"],
+Cell[9412, 308, 785, 21, 33, "Print",
+ CellTags->"Info3639249569-1534712"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[10246, 335, 92, 1, 47, "Input"],
+Cell[10341, 338, 345, 6, 106, "Output"]
+}, Open  ]]
 }
 ]
 *)
