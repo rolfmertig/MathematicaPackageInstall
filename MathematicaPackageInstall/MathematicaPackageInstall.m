@@ -26,6 +26,8 @@ If[$Notebooks && ($VersionNumber < 10), SetOptions[$FrontEndSession, MessageOpti
 
 MathematicalPackageInstall`Version = 2.0;
 
+Off[Get::noopen];
+Off[Needs::nocont];
 BeginPackage["MathematicaPackageInstall`", {"CopyRemote`", "Unzip`"}];
 
 Unprotect @@ {MathematicaPackageInstall, InstallPalette, MathematicaPackageUninstall, UninstallPalette};
