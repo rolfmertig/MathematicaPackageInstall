@@ -26,18 +26,18 @@ If[$Notebooks && ($VersionNumber < 10), SetOptions[$FrontEndSession, MessageOpti
 
 MathematicalPackageInstall`Version = 2.0;
 
-Quiet[BeginPackage["MathematicaPackageInstall`", {"CopyRemote`", "Unzip`"}]];
+BeginPackage["MathematicaPackageInstall`", {"CopyRemote`", "Unzip`"}];
 
 Unprotect @@ {MathematicaPackageInstall, InstallPalette, MathematicaPackageUninstall, UninstallPalette};
-ClearAll @@ {MathematicaPackageInstall, InstallPalette, MathematicaPackageUninstall, UninstallPalette};
+ClearAll["MathematicaPackageInstall`*"]
 
 MathematicaPackageInstall::usage = 
-"MathematicaPackageInstall[\"MyPackage\"] or \n
-MathematicaPackageInstall[\"https://github.com/rolfmertig/MyPackage/archive/master.zip\"] \n
-downloads and unzips master.zip from $WebRepository/MyPackage/archive/master.zip,\n
-to the directory specified by the setting specified by the option Directory,\n
-installing to $UserBaseDirectory/Applications by default.\n
-$WebRepository is set to  \"https://github.com/rolfmertig/\" by default, but can be changed.\n
+"MathematicaPackageInstall[\"MyPackage\"] or 
+MathematicaPackageInstall[\"https://github.com/rolfmertig/MyPackage/archive/master.zip\"] 
+downloads and unzips master.zip from $WebRepository/MyPackage/archive/master.zip,
+to the directory specified by the setting specified by the option Directory,
+installing to $UserBaseDirectory/Applications by default.
+$WebRepository is set to  \"https://github.com/rolfmertig/\" by default, but can be changed.
 If MyPackage already exists it is overwritten, no backups are done.";
 
 InstallPalette::usage = "InstallPalette[\"http://www.mertig.com/mathdepot/ButtonTools.nb\"] installs ButtonTools.nb into 
@@ -246,12 +246,10 @@ MathematicaPackageUninstall[context_String /; (!packQ[context]), opts___] :=
 MathematicaPackageUninstall[context_String /; packQ[context], OptionsPattern[]] /;
     Block[ {$Path = FileNameJoin[{$UserBaseDirectory, "Applications"}]},
       FindFile[context] =!= $Failed
-    ] :=
-    DeleteDirectory[Function[d, If[ FileNameTake[d, -1] === "Kernel",
-      ParentDirectory[d],
-      d
-    ]][DirectoryName[FindFile[context]]],
-      DeleteContents -> True];
+    ] := Block[ {$Path = FileNameJoin[{$UserBaseDirectory, "Applications"}]},
+    DeleteDirectory[Function[d, If[ FileNameTake[d, -1] === "Kernel", ParentDirectory[d], d ]
+    	            ][DirectoryName[FindFile[context]]], DeleteContents -> True
+    ]];
       
 MathematicaPackageUninstall[context_String /; StringMatchQ[context, "*`"], OptionsPattern[]] /;
     Block[ {$Path = FileNameJoin[{$UserBaseDirectory, "Applications"}]},
